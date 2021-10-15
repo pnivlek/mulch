@@ -1,7 +1,7 @@
 use crate::constants;
+use std::convert::TryInto;
 use std::fs::File;
 use std::io::{self, Error, ErrorKind, Read};
-use std::convert::TryInto;
 
 pub struct Chip8 {
     opcode: u16,
@@ -71,7 +71,5 @@ impl Chip8 {
 
     pub fn set_keys(&mut self) -> () {}
 
-    pub fn emulate_cycle(&mut self) -> () {
-
-    }
+    pub fn emulate_cycle(&mut self) -> () {}
 }
