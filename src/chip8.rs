@@ -24,8 +24,8 @@ pub struct Chip8 {
     pub draw_flag: u8,
 }
 
-impl Default for Chip8 {
-    fn default() -> Chip8 {
+impl Chip8 {
+    pub fn new() -> Chip8 {
         Chip8 {
             opcode: 0,
             memory: [0; 4096],
@@ -65,14 +65,13 @@ impl Chip8 {
         Ok(())
     }
 
-    pub fn memory(&mut self) -> &[u8] {
-        &mut self.memory
-    }
-
     pub fn gfx(&self) -> &[u8; constants::GFX_LENGTH] {
         &self.gfx
     }
 
     pub fn set_keys(&mut self) -> () {}
-    pub fn emulate_cycle(&mut self) -> () {}
+
+    pub fn emulate_cycle(&mut self) -> () {
+
+    }
 }

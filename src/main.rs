@@ -1,28 +1,27 @@
-mod utils;
+mod chip8;
 mod constants;
+mod graphics;
+extern crate sdl2;
 
-fn draw_graphics(gfx: &[u8; constants::GFX_LENGTH]) -> () {
-
-}
+use chip8::Chip8;
+use sdl2::render::Canvas;
+use sdl2::video::Window;
+use sdl2::Sdl;
 
 fn main() {
-    // Register input callbacks
-    // registerCallbacks();
+    let (sdl_context, canvas): (Sdl, Canvas<Window>) = graphics::init_graphics();
 
     // Initialize chip8 machine
-    let mut machine: utils::Chip8 = Default::default();
+    let mut chip8 = Chip8::new();
     // Load the ROM
-    machine.load_rom("./rom/pong.rom").expect("Loading ROM:");
+    chip8.load_rom("./rom/pong.rom").expect("Loading ROM:");
 
     loop {
-        machine.emulate_cycle();
+        chip8.emulate_cycle();
 
-        if machine.draw_flag != 0 {
-            draw_graphics(machine.gfx());
-            machine.draw_flag = 0;
+        if chip8.draw_flag != 0 {
+            graphics::draw_graphics(&canvas, chip8.gfx());
+            chip8.draw_flag = 0;
         }
-
-        machine.set_keys();
     }
-
 }
