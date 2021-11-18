@@ -4,30 +4,40 @@ use std::fs::File;
 use std::io::{self, Error, ErrorKind, Read};
 
 pub struct Chip8 {
-    opcode: u16,
+    // Memory
     memory: [u8; constants::MEMORY_SIZE],
-    v: [u8; 16], // registers V0-VE, with carry flag in 16th register
 
+    // Registers: V0-VE, carry flag in 16th register.
+    v: [u8; 16],
+
+    // Index register I.
     i_reg: u16,
+
+    // Program counter (PC)
     pc_reg: u16,
 
+    // Graphics array.
     gfx: [u8; constants::GFX_LENGTH],
 
+    // Delay timer
     delay_timer: u8,
+    // Sound timer
     sound_timer: u8,
 
+    // Stack of addresses
     stack: [u16; 16],
+    // Stack pointer
     sp: u16,
 
-    keypad: [u8; 16],
-
+    // Have we drawn to the screen?
     pub draw_flag: u8,
+    // Have we cleared the screen?
+    pub clear_flag :u8,
 }
 
 impl Chip8 {
     pub fn new() -> Chip8 {
-        Chip8 {
-            opcode: 0,
+        let mut chip8 = Chip8 {
             memory: [0; 4096],
             v: [0; 16],
 
@@ -39,13 +49,36 @@ impl Chip8 {
             delay_timer: 0,
             sound_timer: 0,
 
-            stack: [0; 16],
+            stack: [0; constants::STACK_SIZE],
             sp: 0,
 
-            keypad: [0; 16],
-
             draw_flag: 0,
-        }
+            clear_flag: 0,
+        };
+
+        // Load fonts into system memory
+        let fonts: [u8; 80] = [
+            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+            0x20, 0x60, 0x20, 0x20, 0x70, // 1
+            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+            0xF0, 0x80, 0xF0, 0x80, 0x80, // F
+        ];
+
+        chip8.memory[..80].copy_from_slice(&fonts);
+
+        return chip8;
     }
 }
 
@@ -69,7 +102,9 @@ impl Chip8 {
         &self.gfx
     }
 
-    pub fn set_keys(&mut self) -> () {}
 
-    pub fn emulate_cycle(&mut self) -> () {}
+    pub fn emulate_cycle(&mut self) -> () {
+        // Read instruction.
+        // Do instruction.
+    }
 }
